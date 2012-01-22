@@ -1,13 +1,3 @@
-recursion
-	call function till depth is <= 2
-	
-def function:
-	parse links gives 2 links
-	if depth <= givendeptn is 2
-		parse 2 links got above - 
-			check content, if contains keyword add to result
-			parse links on the page
-				go through each link and check content add to result
-				return result
+
 need to respect nofollow
- TooManyRedirects()
+TooManyRedirects() exception?
