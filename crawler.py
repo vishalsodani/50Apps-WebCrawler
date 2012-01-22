@@ -11,8 +11,8 @@ SEARCH_TEXT = ""
 def crawl_url():
     web_page = requests.get(URL_TO_CRAWL)
     urls_with_search_text = []
-    soup = BeautifulSoup(web_page.content)
-    links = soup.findAll(href=re.compile('^http'))
+    webpage_content = BeautifulSoup(web_page.content)
+    links = webpage_content.findAll(href=re.compile('^http'))
     
     urls_with_search_text = process_links(links, 1)
     print urls_with_search_text
@@ -20,18 +20,24 @@ def crawl_url():
 
 def process_links(links, depth):
     urls_with_search_text = Set()
+
     if depth > 3:
         return urls_with_search_text
 
     for link in links:
         try:
-            web_page = requests.get(link['href'])
+            web_page = requests.get(link['href'], timeout = 3)
             print "processing %s..." % (link['href'])
-            soup = BeautifulSoup(web_page.content)
-            found = soup.findAll(text=re.compile('^' + SEARCH_TEXT))
+
+            webpage_content = BeautifulSoup(web_page.content)
+            found = webpage_content.findAll(text=re.compile('^' + SEARCH_TEXT))
+
             if len(found) > 0:
                 urls_with_search_text.add(link['href'])
-            links_new = soup.findAll(href=re.compile('^http'))
+
+
+            links_new = webpage_content.findAll(href=re.compile('^http'))
+
             for res in process_links(links_new, depth + 1):
                 urls_with_search_text.add(res)
             
