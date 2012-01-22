@@ -2,6 +2,7 @@ from BeautifulSoup import BeautifulSoup
 import requests
 import traceback
 import re
+from sets import Set
 
 URL_TO_CRAWL = ""
 SEARCH_TEXT = ""
@@ -18,19 +19,21 @@ def crawl_url():
 
 
 def process_links(links, depth):
-    urls_with_search_text = []
+    urls_with_search_text = Set()
     if depth > 3:
         return urls_with_search_text
+
     for link in links:
         try:
             web_page = requests.get(link['href'])
+            print "processing %s..." % (link['href'])
             soup = BeautifulSoup(web_page.content)
             found = soup.findAll(text=re.compile('^' + SEARCH_TEXT))
             if len(found) > 0:
-                urls_with_search_text.append(link['href'])
+                urls_with_search_text.add(link['href'])
             links_new = soup.findAll(href=re.compile('^http'))
             for res in process_links(links_new, depth + 1):
-                urls_with_search_text.append(res)
+                urls_with_search_text.add(res)
             
         except:
             traceback.print_exc()
