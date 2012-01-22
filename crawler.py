@@ -13,7 +13,7 @@ def crawl_url(url, searchtext, depth = 1):
         try:
             r = requests.get(link['href'])
             soup = BeautifulSoup(r.content)
-            found = soup.findAll(text=re.compile('^SOPA'))
+            found = soup.findAll(text=re.compile('^' + searchtext))
             if len(found) > 0:
                 urls_with_search_text.append(link['href'])
         except:
@@ -25,7 +25,7 @@ def crawl_url(url, searchtext, depth = 1):
     
 
 if __name__ == '__main__':
-    var = raw_input("Enter url to crawl: ")
+    url = raw_input("Enter url to crawl: ")
     searchtext = raw_input("Enter seacrhtext: ")
-    crawl_url(var,searchtext)
+    crawl_url(url,searchtext)
 
