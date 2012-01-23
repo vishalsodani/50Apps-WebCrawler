@@ -9,6 +9,8 @@ SEARCH_TEXT = ""
 
 
 def crawl_url():
+    #if not 'http' in URL_TO_CRAWL:
+        #URL_TO_CRAWL = 'http://' + URL_TO_CRAWL 
     web_page = requests.get(URL_TO_CRAWL)
     urls_with_search_text = []
     webpage_content = BeautifulSoup(web_page.content)
@@ -26,7 +28,7 @@ def process_links(links, depth):
 
     for link in links:
         try:
-            web_page = requests.get(link['href'], timeout = 3)
+            web_page = requests.get(link['href'], timeout = 3,allow_redirects=False)
             print "processing %s..." % (link['href'])
 
             webpage_content = BeautifulSoup(web_page.content)
@@ -41,9 +43,13 @@ def process_links(links, depth):
             for res in process_links(links_new, depth + 1):
                 urls_with_search_text.add(res)
             
-        except:
+        except requests.ConnectionError:
             traceback.print_exc()
             print link
+        except requests.URLRequired:
+            print "invalid url %s" % (link)
+        except ValueError:
+            traceback.print_exc()
 
     return urls_with_search_text
     
