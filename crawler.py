@@ -9,8 +9,7 @@ SEARCH_TEXT = ""
 
 
 def crawl_url():
-    #if not 'http' in URL_TO_CRAWL:
-        #URL_TO_CRAWL = 'http://' + URL_TO_CRAWL 
+
     web_page = requests.get(URL_TO_CRAWL)
     urls_with_search_text = []
     webpage_content = BeautifulSoup(web_page.content)
