@@ -50,7 +50,7 @@ def process_links(links, depth):
             print "invalid url %s" % (link)
         except ValueError:
             traceback.print_exc()
-        except requests.exception.RequestException:
+        except requests.RequestException:
             traceback.print_exc()
         
 
