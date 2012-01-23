@@ -1,4 +1,13 @@
-
+to do
+--------------------------------
 need to respect nofollow
 TooManyRedirects() exception ?
+
+from other users code found
+--------------------------------------
+urlparse
+idea of using set rather than a list
+check for content type - text\html
+
+
 
